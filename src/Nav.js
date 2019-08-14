@@ -1,8 +1,14 @@
 import React from 'react'
 import useCollection from './useCollection'
 
-function Nav() {
+import { firebase } from './firebase'
+
+function Nav({ user }) {
   const channels = useCollection('channels')
+
+  const onLogOutClickHandler = e => {
+    firebase.auth().signOut()
+  }
 
   return (
     <div className="Nav">
@@ -10,12 +16,12 @@ function Nav() {
         <img
           className="UserImage"
           alt="whatever"
-          src="https://placekitten.com/64/64"
+          src={user.photoUrl}
         />
         <div>
-          <div>Ryan Florence</div>
+          <div>{user.displayName}</div>
           <div>
-            <button className="text-button">log out</button>
+            <button onClick={onLogOutClickHandler} className="text-button">log out</button>
           </div>
         </div>
       </div>
