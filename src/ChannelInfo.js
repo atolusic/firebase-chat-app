@@ -1,12 +1,29 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
-function ChannelInfo() {
+import useDoc from './useDoc'
+
+function useChatScroll(ref) {
+  useEffect(() => {
+    const node = ref.current
+    node.scrollTop = node.scrollHeight
+  })
+}
+
+function ChannelInfo({ channelId }) {
+  const channel = useDoc(`channels/${channelId}`)
+  const scrollerRef = useRef()
+  useChatScroll(scrollerRef)
+
   return (
-    <div className="ChannelInfo">
+    <div ref={scrollerRef} className="ChannelInfo">
       <div className="Topic">
-        Topic: <input className="TopicInput" value="Awesome stuff" />
+        Topic:{" "}
+        <input
+          className="TopicInput"
+          defaultValue={channel && channel.topic}
+        />
       </div>
-      <div className="ChannelName">#general</div>
+      <div className="ChannelName">#{channelId}</div>
     </div>
   )
 }
