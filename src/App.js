@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { firebase, db } from './firebase'
 import { Router, Redirect } from '@reach/router'
 
 import Nav from './Nav'
 import Channel from './Channel'
+
+import { firebase, db, setupPresence } from './firebase'
 
 function App() {
   const user = useAuth()
@@ -67,6 +68,8 @@ function useAuth() {
         .collection('users')
         .doc(user.uid)
         .set(user, { merge: true })
+
+        setupPresence(user)
       } else {
         setUser(null)
       }
